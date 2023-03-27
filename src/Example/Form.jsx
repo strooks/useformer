@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Form = ({ formRef }) => {
+const Form = ({ formRef, onSubmit }) => {
   return (
     <div className="form">
       <h3>the Form</h3>
-      <form ref={formRef}>
+      <form onSubmit={onSubmit} ref={formRef}>
         <div className="control">
           <input type="text" name="firstName" placeholder="firstName" />
           <input type="text" name="lastName" placeholder="lastName" />
@@ -86,6 +86,7 @@ const Form = ({ formRef }) => {
             </label>
           </div>
         </div>
+        <button type="submit">Submit</button>
       </form>
     </div>
   )

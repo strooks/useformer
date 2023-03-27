@@ -30,10 +30,14 @@ function App() {
     { debug: false },
   )
 
+  const onSubmit = () => {
+    console.log('formState', formState)
+  }
+
   return (
     <div className="app">
-      <Form formRef={formRef} />
-      <State formRef={formRef} formState={formState} />
+      <Form formRef={formRef} onSubmit={onSubmit} />
+      <State formState={formState} />
     </div>
   )
 }

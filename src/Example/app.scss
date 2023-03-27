@@ -3,7 +3,7 @@
   padding: 3em;
   gap: 1rem;
   background-color: teal;
-  height: 100vh;
+  min-height: 100vh;
   > div {
     flex-basis: 50%;
     background-color: darkcyan;

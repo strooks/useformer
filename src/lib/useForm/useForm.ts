@@ -1,8 +1,21 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, RefObject } from 'react'
 import fillForm from './_fill-form'
 import { findPath } from './_path'
 
-const useForm = (formRef, initialState = {}, options = {}) => {
+type Options = {
+  persist: string
+  debug: boolean
+}
+
+type State = {
+  [key: string]: any
+}
+
+function useForm(
+  formRef: RefObject<HTMLFormElement>,
+  initialState: State = {},
+  options: Options = {},
+): [() => State, void, void, void] {
   const [theForm, setForm] = useState(null)
   const [initialized, setInitialized] = useState(false)
   const [filledState, setFilledState] = useState(false)
@@ -115,6 +128,16 @@ const useForm = (formRef, initialState = {}, options = {}) => {
       localStorage.setItem(persist, JSON.stringify(newState))
     }
     stateRef.current = newState
+    console.log('changed')
+    if (debug) setState(newState)
+  }
+
+  const reset = () => {
+    const newState = JSON.parse(JSON.stringify(initialState))
+    if (!!persist && typeof localStorage !== 'undefined') {
+      localStorage.setItem(persist, JSON.stringify(newState))
+    }
+    stateRef.current = newState
     if (debug) setState(newState)
   }
 
@@ -140,7 +163,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
       ev.preventDefault()
     }
 
-    setForm(formElement)
+    setForm(formElement as HTMLFormElement)
     formElement.addEventListener('input', onChange)
     formElement.addEventListener('reset', onReset)
     formElement.addEventListener('submit', onSubmit)
@@ -151,7 +174,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
     }
   }, [formRef, persist])
 
-  return [debug ? () => state : () => stateRef.current, update, clear]
+  return [debug ? state : () => stateRef.current, update, reset]
 }
 
 export default useForm
