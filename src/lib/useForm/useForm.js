@@ -151,7 +151,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
     }
   }, [formRef, persist])
 
-  return [() => stateRef.current, update, clear]
+  return [stateRef.current, update, clear]
 }
 
 export default useForm
