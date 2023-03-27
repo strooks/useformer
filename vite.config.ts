@@ -13,7 +13,7 @@ export default defineConfig((configEnv) => ({
     react(),
     tsConfigPaths(),
     linterPlugin({
-      include: ['./src}/**/*.{ts,tsx}'],
+      include: ['./src}/**/*.{js, jsx, ts,tsx}'],
       linters: [new EsLinter({ configEnv })],
     }),
     dts({

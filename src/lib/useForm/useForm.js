@@ -151,7 +151,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
     }
   }, [formRef, persist])
 
-  return [debug ? () => state : () => stateRef.current, update, clear]
+  return [debug ? () => ({ ...state }) : () => stateRef.current, update, clear]
 }
 
 export default useForm
