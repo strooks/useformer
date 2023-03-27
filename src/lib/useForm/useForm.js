@@ -6,10 +6,10 @@ const useForm = (formRef, initialState = {}, options = {}) => {
   const [theForm, setForm] = useState(null)
   const [initialized, setInitialized] = useState(false)
   const [filledState, setFilledState] = useState(false)
-  // const [state, setState] = useState(initialState)
+  const [state, setState] = useState(initialState)
   const stateRef = useRef(initialState)
 
-  const { persist } = options
+  const { persist, debug } = options
 
   if (!!persist && typeof localStorage !== 'undefined') {
     const lsState = localStorage.getItem(persist)
@@ -43,6 +43,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
         target[name] = typeof target[name] === 'undefined' ? null : target[name]
       })
       setFilledState(filledState)
+      if (debug) setState(filledState)
       stateRef.current = filledState
     }
   }, [formRef, setFilledState, filledState, initialized])
@@ -56,6 +57,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
     }
     fillForm(formRef.current, newState)
     stateRef.current = newState
+    if (debug) setState(newState)
     if (!!persist && typeof localStorage !== 'undefined') {
       localStorage.setItem(persist, JSON.stringify(newState))
     }
@@ -113,6 +115,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
       localStorage.setItem(persist, JSON.stringify(newState))
     }
     stateRef.current = newState
+    if (debug) setState(newState)
   }
 
   const clear = () => {
@@ -120,6 +123,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
       localStorage.removeItem(persist)
     }
     stateRef.current = {}
+    if (debug) setState({})
     theForm.reset()
   }
 
@@ -127,6 +131,7 @@ const useForm = (formRef, initialState = {}, options = {}) => {
     const formElement = formRef.current
     const onReset = () => {
       stateRef.current = {}
+      if (debug) setState({})
       if (!!persist && typeof localStorage !== 'undefined') {
         localStorage.removeItem(persist)
       }
